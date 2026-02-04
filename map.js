@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   const geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
     mapboxgl: mapboxgl,
-    bbox: [-122.55839130279035, 37.67726355946309, -121.76737567964851, 38.12479895222226],
+    bbox: [-122.138213, 37.855845, -121.524351, 38.098867],
     placeholder: 'Search for an address',
     marker: false,
     proximity: {
