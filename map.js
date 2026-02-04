@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     const pt = turf.point(event.result.geometry.coordinates);
-    const resultInSericeArea = serviceAreaGeoJSON.features.some((feature) =>
+    const matchedFeature = serviceAreaGeoJSON.features.find((feature) =>
       turf.booleanPointInPolygon(pt, feature)
     );
     
@@ -96,10 +96,13 @@ document.addEventListener('DOMContentLoaded', async function () {
       return;
     }
 
-    if (!resultInSericeArea) {
+    if (!matchedFeature) {
       addressAlert.innerHTML = '<div class="alert alert-danger">' + triangleExclamationIcon + '<span>Sorry, this address is outside of the service area.</span></div>';
     } else {
-      addressAlert.innerHTML = '<div class="alert alert-success">' + thumbsUpIcon + '<span>This address is inside a Tri MyRide zone.* Download the Tri MyRide app to request a ride or call <a href="tel:1-925-470-4997">1-925-470-4997</a>.</span></div>';
+      const zoneName = matchedFeature.properties && matchedFeature.properties.name
+        ? matchedFeature.properties.name
+        : '';
+      addressAlert.innerHTML = '<div class="alert alert-success">' + thumbsUpIcon + '<span>This address is inside the ' + zoneName + ' Tri MyRide zone.* Download the Tri MyRide app to request a ride or call <a href="tel:1-925-470-4997">1-925-470-4997</a>.</span></div>';
     }
   });
 
