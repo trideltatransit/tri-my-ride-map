@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   }
 
   mapboxgl.accessToken = 'pk.eyJ1IjoidHJpZGVsdGF0cmFuc2l0IiwiYSI6ImNtbDdyOHo3ZjBzNGgzZ3ByeGEwMzZhbXkifQ.RlmYDj98uIoB0Zcd-35Qig';
-  var initialZoom = isMobile() ? 9.3 : 11;
+  var initialZoom = isMobile() ? 9.3 : 10.5;
   var map = new mapboxgl.Map({
     container: 'tri-my-ride-service-map',
     style: 'mapbox://styles/mapbox/light-v11',
