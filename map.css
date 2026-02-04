@@ -1,0 +1,43 @@
+.tri-my-ride-map .map-type-menu {
+  position: absolute;
+  top: 16px;
+  left: 2px;
+  padding: 2px;
+}
+
+.tri-my-ride-map-container {
+  height: 600px;
+  margin-top: 16px;
+}
+
+/* .map-type-menu label {
+  margin-bottom: 0;
+}
+
+.map-type-menu input {
+  margin: 0 3px 0 5px;
+}
+
+.mapboxgl-ctrl-geocoder {
+  width: 100%!important;
+  max-width: none!important;
+} */
+
+.tri-my-ride-map .alert {
+  @apply p-4 rounded-lg my-4;
+  padding: 16px;
+  border-radius: 8px;
+  margin: 16px 0;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.tri-my-ride-map .alert-danger {
+  background-color: oklch(93.6% 0.032 17.717);
+  color: oklch(39.6% 0.141 25.723);;
+}
+
+.tri-my-ride-map .alert-success {
+  background-color: oklch(96.2% 0.044 156.743);
+  color: oklch(39.3% 0.095 152.535);
+}
