@@ -14,9 +14,21 @@
       <div class="tri-my-ride-map">
         <h2>Address Lookup</h2>
         <p>Enter an address below to see if it is inside of the Tri MyRide service area.</p>
-        <div id="address"></div>
-        <div id="address-alert"></div>
-        <div id="tri-my-ride-service-map" class="tri-my-ride-map-container"></div>
+        <form id="address-form" class="address-form" novalidate>
+          <label id="address-label">Street address</label>
+          <div class="address-input-row">
+            <div id="address-autocomplete" class="address-autocomplete"></div>
+            <button type="submit" class="address-input-row-button">Check address</button>
+          </div>
+        </form>
+        <div
+          id="address-alert"
+          class="address-alert"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        ></div>
+        <div id="tri-my-ride-service-map" class="tri-my-ride-map-container" aria-hidden="true"></div>
       </div>
     </body>
 </html>

@@ -4,6 +4,70 @@
   padding: 0 16px;
 }
 
+.tri-my-ride-map .address-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.tri-my-ride-map .address-form label {
+  font-weight: 600;
+}
+
+.tri-my-ride-map .address-input-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tri-my-ride-map button.address-input-row-button {
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: none;
+  background: #1f4e79;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.tri-my-ride-map button.address-input-row-button:hover {
+  background: #173b5a;
+}
+
+.tri-my-ride-map button.address-input-row-button:focus-visible,
+.tri-my-ride-map button.address-input-row-button:focus-visible {
+  outline: 3px solid #111827;
+  outline-offset: 2px;
+}
+
+.tri-my-ride-map .address-autocomplete {
+  flex: 1 1 260px;
+}
+
+.tri-my-ride-map .address-autocomplete .mapboxgl-ctrl-geocoder {
+  min-width: min(100%, 520px);
+  width: 100%;
+  box-shadow: none;
+  border: 1px solid #9ca3af;
+}
+
+.tri-my-ride-map .address-autocomplete .mapboxgl-ctrl-geocoder--input {
+  min-height: 44px;
+  font-size: 16px;
+}
+
+.tri-my-ride-map .address-autocomplete .mapboxgl-ctrl-geocoder--input:focus-visible {
+  outline: 3px solid #111827;
+  outline-offset: 2px;
+}
+
+.tri-my-ride-map .mapboxgl-ctrl-geocoder--icon-search {
+  width: 24px;
+  height: 24px;
+}
+
 .tri-my-ride-map .map-type-menu {
   position: absolute;
   top: 16px;
