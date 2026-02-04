@@ -56,6 +56,17 @@ document.addEventListener('DOMContentLoaded', async function () {
     zoom: initialZoom
   });
 
+  function getServiceAreaBounds(geojson) {
+    if (!geojson || !geojson.features || !geojson.features.length) {
+      return null;
+    }
+    const bounds = turf.bbox(geojson);
+    if (!Array.isArray(bounds) || bounds.length !== 4) {
+      return null;
+    }
+    return bounds;
+  }
+
 
   addMapTypeControl(document.getElementById('tri-my-ride-service-map'));
 
@@ -124,6 +135,14 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   map.on('style.load', function () {
     map.scrollZoom.disable();
+
+    const serviceAreaBounds = getServiceAreaBounds(serviceAreaGeoJSON);
+    if (serviceAreaBounds) {
+      map.fitBounds(serviceAreaBounds, {
+        padding: isMobile() ? 10 : 50,
+        duration: 0
+      });
+    }
 
     const routeLayerIds = [];
 
