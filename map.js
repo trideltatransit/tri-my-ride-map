@@ -58,7 +58,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     container: 'tri-my-ride-service-map',
     style: 'mapbox://styles/mapbox/light-v11',
     center: [-121.81159429150071, 37.99162107738382],
-    zoom: initialZoom
+    zoom: initialZoom,
+    minZoom: 10
   });
 
   function getServiceAreaBounds(geojson) {
