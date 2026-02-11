@@ -217,6 +217,16 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
   }
 
+  function zoomToServiceArea(duration = 1000) {
+    const serviceAreaBounds = getServiceAreaBounds(serviceAreaGeoJSON);
+    if (serviceAreaBounds) {
+      map.fitBounds(serviceAreaBounds, {
+        padding: isMobile() ? 10 : 50,
+        duration
+      });
+    }
+  }
+
   function setupAutocomplete() {
     if (!autocompleteContainer || geocoder) {
       return;
@@ -257,6 +267,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     geocoder.on('clear', () => {
       clearAddressAlert();
       clearMapPoint();
+      zoomToServiceArea(1000);
     });
   }
 
@@ -267,13 +278,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   map.on('style.load', function () {
     map.scrollZoom.disable();
 
-    const serviceAreaBounds = getServiceAreaBounds(serviceAreaGeoJSON);
-    if (serviceAreaBounds) {
-      map.fitBounds(serviceAreaBounds, {
-        padding: isMobile() ? 10 : 50,
-        duration: 0
-      });
-    }
+    zoomToServiceArea(0);
 
     const routeLayerIds = [];
 
