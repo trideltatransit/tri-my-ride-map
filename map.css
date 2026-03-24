@@ -1,13 +1,37 @@
+body {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Outfit", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
 .tri-my-ride-map  {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 16px;
 }
 
+.tri-my-ride-map input,
+.tri-my-ride-map textarea,
+.tri-my-ride-map select,
+.tri-my-ride-map button {
+  font-family: "Outfit", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+
 .tri-my-ride-map .address-form {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   margin-top: 8px;
 }
 
@@ -23,27 +47,30 @@
 
 .tri-my-ride-map button.address-input-row-button {
   min-height: 44px;
-  padding: 10px 16px;
-  border-radius: 6px;
-  border: none;
-  background: #1f4e79;
   color: #fff;
-  font-size: 16px;
   cursor: pointer;
+  padding: 14px 20px;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  position: relative;
+  background: #000000;
+  border-radius: 0px;
+  font-size: 16px;
+  text-decoration: none;
+  border: 0;
 }
 
 .tri-my-ride-map button.address-input-row-button:hover {
-  background: #173b5a;
+  background: #004B8F;
+  color: #fff;
+  text-decoration: none;
 }
 
 .tri-my-ride-map button.address-input-row-button:focus-visible,
 .tri-my-ride-map button.address-input-row-button:focus-visible {
   outline: 3px solid #111827;
   outline-offset: 2px;
-}
-
-.tri-my-ride-map .address-autocomplete {
-  flex: 1 1 260px;
 }
 
 .tri-my-ride-map .address-autocomplete .mapboxgl-ctrl-geocoder {
