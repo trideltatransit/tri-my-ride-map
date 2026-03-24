@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     style: 'mapbox://styles/mapbox/light-v11',
     center: [-121.81159429150071, 37.99162107738382],
     zoom: initialZoom,
-    minZoom: 10
+    minZoom: 9
   });
 
   function getServiceAreaBounds(geojson) {
