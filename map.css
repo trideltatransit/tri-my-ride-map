@@ -73,26 +73,17 @@ h1, h2, h3, h4, h5, h6 {
   outline-offset: 2px;
 }
 
-.tri-my-ride-map .address-autocomplete .mapboxgl-ctrl-geocoder {
-  min-width: min(100%, 520px);
-  width: 100%;
-  box-shadow: none;
-  border: 1px solid #9ca3af;
-}
-
-.tri-my-ride-map .address-autocomplete .mapboxgl-ctrl-geocoder--input {
+.tri-my-ride-map .address-autocomplete input {
+  outline: 3px solid transparent;
+  outline-offset: 2px;
   min-height: 44px;
   font-size: 16px;
+  border: thin dotted;
 }
 
-.tri-my-ride-map .address-autocomplete .mapboxgl-ctrl-geocoder--input:focus-visible {
+.tri-my-ride-map .address-autocomplete input:focus-visible {
   outline: 3px solid #111827;
   outline-offset: 2px;
-}
-
-.tri-my-ride-map .mapboxgl-ctrl-geocoder--icon-search {
-  width: 24px;
-  height: 24px;
 }
 
 .tri-my-ride-map .map-type-menu {
@@ -107,7 +98,6 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 16px;
   position: relative;
 }
-
 
 .tri-my-ride-map .alert {
   padding: 16px;

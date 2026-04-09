@@ -109,6 +109,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const params = new URLSearchParams({
       access_token: mapboxgl.accessToken,
       limit: '1',
+      types: 'address,poi,place',
       bbox: '-122.138213,37.855845,-121.524351,38.098867',
       proximity: '-121.79150796823885,37.99492924402946'
     });
@@ -232,44 +233,117 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (!autocompleteContainer || geocoder) {
       return;
     }
-    if (typeof MapboxGeocoder !== 'function') {
-      updateAddressAlert('<div class="alert alert-danger">' + triangleExclamationIcon + '<span>Autocomplete is unavailable right now. Please type the full address.</span></div>', true);
-      return;
-    }
-    geocoder = new MapboxGeocoder({
-      accessToken: mapboxgl.accessToken,
-      mapboxgl: mapboxgl,
-      bbox: [-122.138213, 37.855845, -121.524351, 38.098867],
-      placeholder: 'Start typing an address',
-      marker: false,
-      proximity: {
-        longitude: -121.79150796823885,
-        latitude: 37.99492924402946
+    const initSearchBox = () => {
+      if (geocoder || !autocompleteContainer) {
+        return;
       }
-    });
+      if (!window.mapboxsearch || typeof window.mapboxsearch.MapboxSearchBox !== 'function') {
+        updateAddressAlert('<div class="alert alert-danger">' + triangleExclamationIcon + '<span>Autocomplete is unavailable right now. Please type the full address.</span></div>', true);
+        return;
+      }
 
-    const geocoderElement = geocoder.onAdd(map);
-    autocompleteContainer.appendChild(geocoderElement);
+      const searchBox = new window.mapboxsearch.MapboxSearchBox();
+      searchBox.accessToken = mapboxgl.accessToken;
+      searchBox.placeholder = 'Start typing an address or place';
+      searchBox.options = {
+        bbox: [-122.138213, 37.855845, -121.524351, 38.098867],
+        proximity: [-121.79150796823885, 37.99492924402946]
+      };
+      searchBox.mapboxgl = mapboxgl;
+      searchBox.marker = false;
+      searchBox.componentOptions = {
+        flyTo: false
+      };
 
-    const geocoderInput = geocoderElement.querySelector('input');
-    if (geocoderInput) {
-      geocoderInput.setAttribute('aria-labelledby', 'address-label');
-      geocoderInput.setAttribute('autocomplete', 'street-address');
-      addressInput = geocoderInput;
-      addressInput.addEventListener('input', function () {
+      autocompleteContainer.innerHTML = '';
+      autocompleteContainer.appendChild(searchBox);
+
+      if (searchBox.input) {
+        searchBox.input.setAttribute('aria-labelledby', 'address-label');
+        searchBox.input.setAttribute('autocomplete', 'street-address');
+        addressInput = searchBox.input;
+      }
+
+      searchBox.addEventListener('input', function (event) {
+        if (event.target !== event.currentTarget) {
+          return;
+        }
         clearAddressAlert();
       });
+
+      searchBox.addEventListener('retrieve', function (event) {
+        const detail = event && event.detail;
+        const featureCollection = detail && Array.isArray(detail.features)
+          ? detail
+          : (detail && detail.type === 'FeatureCollection' && Array.isArray(detail.features) ? detail : null);
+        const feature = featureCollection && Array.isArray(featureCollection.features)
+          ? featureCollection.features[0]
+          : null;
+        if (feature && feature.properties) {
+          const props = feature.properties;
+          const featureType = props.feature_type;
+          const name = typeof props.name === 'string' ? props.name.trim() : '';
+          const fullAddress = typeof props.full_address === 'string' ? props.full_address.trim() : '';
+          const address = typeof props.address === 'string' ? props.address.trim() : '';
+          const placeFormatted = typeof props.place_formatted === 'string' ? props.place_formatted.trim() : '';
+
+          let nextValue = '';
+          if (featureType === 'poi' && name && fullAddress) {
+            nextValue = name + ', ' + fullAddress;
+          } else if (fullAddress) {
+            nextValue = fullAddress;
+          } else if (name && address && placeFormatted) {
+            nextValue = name + ', ' + address + ', ' + placeFormatted;
+          } else if (address && placeFormatted) {
+            nextValue = address + ', ' + placeFormatted;
+          } else if (name) {
+            nextValue = name;
+          }
+
+          if (nextValue) {
+            const setDisplayedValue = () => {
+              searchBox.value = nextValue;
+              if (searchBox.input) {
+                searchBox.input.value = nextValue;
+              }
+            };
+            setDisplayedValue();
+            requestAnimationFrame(() => {
+              setDisplayedValue();
+            });
+          }
+        }
+        if (feature && feature.geometry && Array.isArray(feature.geometry.coordinates)) {
+          const nextZoom = isMobile() ? 13 : 14;
+          map.flyTo({
+            center: feature.geometry.coordinates,
+            essential: true
+          });
+        }
+        handleGeocodeFeature(feature);
+      });
+
+      searchBox.addEventListener('clear', function () {
+        clearAddressAlert();
+        clearMapPoint();
+        zoomToServiceArea(1000);
+      });
+
+      geocoder = searchBox;
+    };
+
+    if (window.mapboxsearch && typeof window.mapboxsearch.MapboxSearchBox === 'function') {
+      initSearchBox();
+      return;
     }
 
-    geocoder.on('result', (event) => {
-      handleGeocodeFeature(event.result);
-    });
+    const searchScript = document.getElementById('search-js');
+    if (searchScript) {
+      searchScript.addEventListener('load', initSearchBox, { once: true });
+      return;
+    }
 
-    geocoder.on('clear', () => {
-      clearAddressAlert();
-      clearMapPoint();
-      zoomToServiceArea(1000);
-    });
+    updateAddressAlert('<div class="alert alert-danger">' + triangleExclamationIcon + '<span>Autocomplete is unavailable right now. Please type the full address.</span></div>', true);
   }
 
   setupAutocomplete();
