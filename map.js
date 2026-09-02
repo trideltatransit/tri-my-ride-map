@@ -3,6 +3,15 @@ function isMobile() {
   return !mq.matches;
 }
 
+const localSearchAliases = new Map([
+  ['lmc', 'Los Medanos College']
+]);
+
+function expandLocalSearchAlias(value) {
+  const normalizedValue = value.trim().toLowerCase();
+  return localSearchAliases.get(normalizedValue) || value;
+}
+
 document.addEventListener('DOMContentLoaded', async function () {
   let serviceAreaGeoJSON = null;
   try {
@@ -105,7 +114,8 @@ document.addEventListener('DOMContentLoaded', async function () {
   }
 
   async function geocodeAddress(address) {
-    const encodedAddress = encodeURIComponent(address);
+    const expandedAddress = expandLocalSearchAlias(address);
+    const encodedAddress = encodeURIComponent(expandedAddress);
     const params = new URLSearchParams({
       access_token: mapboxgl.accessToken,
       limit: '1',
@@ -251,6 +261,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       };
       searchBox.mapboxgl = mapboxgl;
       searchBox.marker = false;
+      searchBox.interceptSearch = expandLocalSearchAlias;
       searchBox.componentOptions = {
         flyTo: false
       };
